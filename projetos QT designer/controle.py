@@ -2,12 +2,51 @@ from PyQt5 import uic,QtWidgets
 import mysql.connector
 from reportlab.pdfgen import canvas
 
+numero_id = 0
+
 banco = mysql.connector.connect(
     host="localhost",
     user="root",
     passwd="",
     database="cadastro_produtos"
 )
+
+def editar_dados():
+    global numero_id
+    linha = segunda_tela.tableWidget.currentRow()
+
+    cursor = banco.cursor()
+    cursor.execute("SELECT id FROM produtos")
+    dados_lidos = cursor.fetchall()
+    valor_id = dados_lidos[linha][0]
+    cursor.execute("SELECT * FROM produtos WHERE id="+ str(valor_id))
+    produto = cursor.fetchall()
+    menu_editar.show()
+
+    numero_id =valor_id
+    
+    menu_editar.lineEdit.setText(str(produto[0][4]))
+    menu_editar.lineEdit_2.setText(str(produto[0][3]))
+    menu_editar.lineEdit_3.setText(str(produto[0][2]))
+    menu_editar.lineEdit_4.setText(str(produto[0][1]))
+    menu_editar.lineEdit_5.setText(str(produto[0][0]))
+
+def salvar_dados():
+    #pega o numero do id
+    global numero_id
+    # valor digitado no lineEdit
+    codigo = menu_editar.lineEdit_2.text()
+    descricao = menu_editar.lineEdit_3.text()
+    preco = menu_editar.lineEdit_4.text()
+    categoria = menu_editar.lineEdit_5.text()
+    # atualizar os dados no banco
+    
+
+
+    
+
+    
+        
 
 def excluir_dados():
     linha = segunda_tela.tableWidget.currentRow()
@@ -93,10 +132,14 @@ def chama_segunda_tela():
 app=QtWidgets.QApplication([])
 formulario=uic.loadUi("formulario.ui")
 segunda_tela=uic.loadUi("listar_dados.ui")
+menu_editar=uic.loadUi("tela_editar.ui")
 formulario.pushButton.clicked.connect(funcao_principal)
 formulario.pushButton_2.clicked.connect(chama_segunda_tela)
 segunda_tela.pushButton.clicked.connect(gerar_pdf)
 segunda_tela.pushButton_2.clicked.connect(excluir_dados)
+segunda_tela.pushButton_3.clicked.connect(editar_dados)
+menu_editar.pushButton.clicked.connect(salvar_dados)
+
 
 
 
