@@ -35,17 +35,21 @@ def salvar_dados():
     #pega o numero do id
     global numero_id
     # valor digitado no lineEdit
-    codigo = menu_editar.lineEdit_2.text()
-    descricao = menu_editar.lineEdit_3.text()
-    preco = menu_editar.lineEdit_4.text()
-    categoria = menu_editar.lineEdit_5.text()
+    codigo = menu_editar.lineEdit_5.text()
+    descricao = menu_editar.lineEdit_4.text()
+    preco = menu_editar.lineEdit_3.text()
+    categoria = menu_editar.lineEdit_2.text()
     # atualizar os dados no banco
-    
+    cursor = banco.cursor()
+    cursor.execute("UPDATE produtos SET codigo = '{}', descricao = '{}', preco = '{}', categoria ='{}' WHERE id = {}".format(codigo,descricao,preco,categoria,numero_id))
+    banco.commit()
+    #atualizar as janelas
+    menu_editar.close()
+    segunda_tela.close()
+    chama_segunda_tela()
 
 
-    
 
-    
         
 
 def excluir_dados():
