@@ -13,6 +13,7 @@ banco = mysql.connector.connect(
 
 def editar_dados():
     global numero_id
+
     linha = segunda_tela.tableWidget.currentRow()
 
     cursor = banco.cursor()
@@ -23,22 +24,24 @@ def editar_dados():
     produto = cursor.fetchall()
     menu_editar.show()
 
-    numero_id =valor_id
     
-    menu_editar.lineEdit.setText(str(produto[0][4]))
-    menu_editar.lineEdit_2.setText(str(produto[0][3]))
+    menu_editar.lineEdit.setText(str(produto[0][0]))
+    menu_editar.lineEdit_2.setText(str(produto[0][1]))
     menu_editar.lineEdit_3.setText(str(produto[0][2]))
-    menu_editar.lineEdit_4.setText(str(produto[0][1]))
-    menu_editar.lineEdit_5.setText(str(produto[0][0]))
+    menu_editar.lineEdit_4.setText(str(produto[0][3]))
+    menu_editar.lineEdit_5.setText(str(produto[0][4]))
+    numero_id =valor_id
+
+
 
 def salvar_dados():
-    #pega o numero do id
     global numero_id
-    # valor digitado no lineEdit
-    codigo = menu_editar.lineEdit_5.text()
-    descricao = menu_editar.lineEdit_4.text()
-    preco = menu_editar.lineEdit_3.text()
-    categoria = menu_editar.lineEdit_2.text()
+
+    # ler dados do lineEdit
+    codigo = menu_editar.lineEdit_2.text()
+    descricao = menu_editar.lineEdit_3.text()
+    preco = menu_editar.lineEdit_4.text()
+    categoria = menu_editar.lineEdit_5.text()
     # atualizar os dados no banco
     cursor = banco.cursor()
     cursor.execute("UPDATE produtos SET codigo = '{}', descricao = '{}', preco = '{}', categoria ='{}' WHERE id = {}".format(codigo,descricao,preco,categoria,numero_id))
